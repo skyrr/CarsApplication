@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JourneyDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="car">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="type" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="consumption" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="journeys" Relationship="Self.FK_journey_car" FromRole="car" ToRole="journey" />
+  </EntityType>
+  <EntityType Name="journey">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="journey1" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="departure" Type="Int32" Nullable="false" />
+    <Property Name="destination" Type="Int32" Nullable="false" />
+    <Property Name="car_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="car" Relationship="Self.FK_journey_car" FromRole="journey" ToRole="car" />
+    <NavigationProperty Name="point" Relationship="Self.FK_journey_point1" FromRole="journey" ToRole="point" />
+    <NavigationProperty Name="point1" Relationship="Self.FK_journey_point2" FromRole="journey" ToRole="point" />
+  </EntityType>
+  <EntityType Name="point">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="point1" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="journeys" Relationship="Self.FK_journey_point1" FromRole="point" ToRole="journey" />
+    <NavigationProperty Name="journeys1" Relationship="Self.FK_journey_point2" FromRole="point" ToRole="journey" />
+  </EntityType>
+  <Association Name="FK_journey_car">
+    <End Role="car" Type="Self.car" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="car">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="car_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_journey_point1">
+    <End Role="point" Type="Self.point" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="point">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="departure" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_journey_point2">
+    <End Role="point" Type="Self.point" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="point">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="destination" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="JourneyDataEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="cars" EntityType="Self.car" />
+    <EntitySet Name="journeys" EntityType="Self.journey" />
+    <EntitySet Name="points" EntityType="Self.point" />
+    <AssociationSet Name="FK_journey_car" Association="Self.FK_journey_car">
+      <End Role="car" EntitySet="cars" />
+      <End Role="journey" EntitySet="journeys" />
+    </AssociationSet>
+    <AssociationSet Name="FK_journey_point1" Association="Self.FK_journey_point1">
+      <End Role="point" EntitySet="points" />
+      <End Role="journey" EntitySet="journeys" />
+    </AssociationSet>
+    <AssociationSet Name="FK_journey_point2" Association="Self.FK_journey_point2">
+      <End Role="point" EntitySet="points" />
+      <End Role="journey" EntitySet="journeys" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

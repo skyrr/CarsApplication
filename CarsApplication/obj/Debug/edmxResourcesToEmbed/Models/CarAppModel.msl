@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CarsAppModelStoreContainer" CdmEntityContainer="CarsAppEntities">
+    <EntitySetMapping Name="Cars">
+      <EntityTypeMapping TypeName="CarsAppModel.Car">
+        <MappingFragment StoreEntitySet="Car">
+          <ScalarProperty Name="car_id" ColumnName="car_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="consumption" ColumnName="consumption" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Journeys">
+      <EntityTypeMapping TypeName="CarsAppModel.Journey">
+        <MappingFragment StoreEntitySet="Journey">
+          <ScalarProperty Name="journey_id" ColumnName="journey_id" />
+          <ScalarProperty Name="journey1" ColumnName="journey" />
+          <ScalarProperty Name="departure" ColumnName="departure" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="car_id" ColumnName="car_id" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="distance" ColumnName="distance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Points">
+      <EntityTypeMapping TypeName="CarsAppModel.Point">
+        <MappingFragment StoreEntitySet="Point">
+          <ScalarProperty Name="point_id" ColumnName="point_id" />
+          <ScalarProperty Name="point1" ColumnName="point" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

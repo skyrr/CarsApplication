@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CarsAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="type" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="consumption" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Journey">
+          <Key>
+            <PropertyRef Name="journey_id" />
+          </Key>
+          <Property Name="journey_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="journey" Type="char" MaxLength="100" Nullable="false" />
+          <Property Name="departure" Type="int" Nullable="false" />
+          <Property Name="destination" Type="int" Nullable="false" />
+          <Property Name="car_id" Type="int" Nullable="false" />
+          <Property Name="date" Type="date" />
+          <Property Name="distance" Type="int" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="point_id" />
+          </Key>
+          <Property Name="point_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="point" Type="char" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_journey_car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_journey_point">
+          <End Role="Point" Type="Self.Point" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="departure" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_journey_point1">
+          <End Role="Point" Type="Self.Point" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarsAppModelStoreContainer">
+          <EntitySet Name="Car" EntityType="Self.Car" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Journey" EntityType="Self.Journey" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Point" EntityType="Self.Point" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_journey_car" Association="Self.FK_journey_car">
+            <End Role="Car" EntitySet="Car" />
+            <End Role="Journey" EntitySet="Journey" />
+          </AssociationSet>
+          <AssociationSet Name="FK_journey_point" Association="Self.FK_journey_point">
+            <End Role="Point" EntitySet="Point" />
+            <End Role="Journey" EntitySet="Journey" />
+          </AssociationSet>
+          <AssociationSet Name="FK_journey_point1" Association="Self.FK_journey_point1">
+            <End Role="Point" EntitySet="Point" />
+            <End Role="Journey" EntitySet="Journey" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CarsAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="consumption" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Journeys" Relationship="Self.FK_journey_car" FromRole="Car" ToRole="Journey" />
+        </EntityType>
+        <EntityType Name="Journey">
+          <Key>
+            <PropertyRef Name="journey_id" />
+          </Key>
+          <Property Name="journey_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="journey1" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="departure" Type="Int32" Nullable="false" />
+          <Property Name="destination" Type="Int32" Nullable="false" />
+          <Property Name="car_id" Type="Int32" Nullable="false" />
+          <Property Name="date" Type="DateTime" Precision="0" />
+          <Property Name="distance" Type="Int32" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_journey_car" FromRole="Journey" ToRole="Car" />
+          <NavigationProperty Name="Point" Relationship="Self.FK_journey_point" FromRole="Journey" ToRole="Point" />
+          <NavigationProperty Name="Point1" Relationship="Self.FK_journey_point1" FromRole="Journey" ToRole="Point" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="point_id" />
+          </Key>
+          <Property Name="point_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="point1" Type="String" MaxLength="100" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Journeys" Relationship="Self.FK_journey_point" FromRole="Point" ToRole="Journey" />
+          <NavigationProperty Name="Journeys1" Relationship="Self.FK_journey_point1" FromRole="Point" ToRole="Journey" />
+        </EntityType>
+        <Association Name="FK_journey_car">
+          <End Role="Car" Type="Self.Car" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Car">
+              <PropertyRef Name="car_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="car_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_journey_point">
+          <End Role="Point" Type="Self.Point" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="departure" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_journey_point1">
+          <End Role="Point" Type="Self.Point" Multiplicity="1" />
+          <End Role="Journey" Type="Self.Journey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Point">
+              <PropertyRef Name="point_id" />
+            </Principal>
+            <Dependent Role="Journey">
+              <PropertyRef Name="destination" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CarsAppEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cars" EntityType="Self.Car" />
+          <EntitySet Name="Journeys" EntityType="Self.Journey" />
+          <EntitySet Name="Points" EntityType="Self.Point" />
+          <AssociationSet Name="FK_journey_car" Association="Self.FK_journey_car">
+            <End Role="Car" EntitySet="Cars" />
+            <End Role="Journey" EntitySet="Journeys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_journey_point" Association="Self.FK_journey_point">
+            <End Role="Point" EntitySet="Points" />
+            <End Role="Journey" EntitySet="Journeys" />
+          </AssociationSet>
+          <AssociationSet Name="FK_journey_point1" Association="Self.FK_journey_point1">
+            <End Role="Point" EntitySet="Points" />
+            <End Role="Journey" EntitySet="Journeys" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CarsAppModelStoreContainer" CdmEntityContainer="CarsAppEntities">
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="CarsAppModel.Car">
+              <MappingFragment StoreEntitySet="Car">
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="consumption" ColumnName="consumption" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Journeys">
+            <EntityTypeMapping TypeName="CarsAppModel.Journey">
+              <MappingFragment StoreEntitySet="Journey">
+                <ScalarProperty Name="journey_id" ColumnName="journey_id" />
+                <ScalarProperty Name="journey1" ColumnName="journey" />
+                <ScalarProperty Name="departure" ColumnName="departure" />
+                <ScalarProperty Name="destination" ColumnName="destination" />
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="distance" ColumnName="distance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Points">
+            <EntityTypeMapping TypeName="CarsAppModel.Point">
+              <MappingFragment StoreEntitySet="Point">
+                <ScalarProperty Name="point_id" ColumnName="point_id" />
+                <ScalarProperty Name="point1" ColumnName="point" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

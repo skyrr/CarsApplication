@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="JourneyDataModelStoreContainer" CdmEntityContainer="JourneyDataEntities">
+    <EntitySetMapping Name="cars">
+      <EntityTypeMapping TypeName="JourneyDataModel.car">
+        <MappingFragment StoreEntitySet="car">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="consumption" ColumnName="consumption" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="journeys">
+      <EntityTypeMapping TypeName="JourneyDataModel.journey">
+        <MappingFragment StoreEntitySet="journey">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="journey1" ColumnName="journey" />
+          <ScalarProperty Name="departure" ColumnName="departure" />
+          <ScalarProperty Name="destination" ColumnName="destination" />
+          <ScalarProperty Name="car_id" ColumnName="car_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="points">
+      <EntityTypeMapping TypeName="JourneyDataModel.point">
+        <MappingFragment StoreEntitySet="point">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="point1" ColumnName="point" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

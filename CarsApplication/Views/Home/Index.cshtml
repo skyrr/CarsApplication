@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+<br />
+<h2>Index</h2>
+
+
+<div class="row">
+    <div>
+        @Html.ActionLink("List of journeys", "Index", "Journey")<br />
+        @Html.ActionLink("List of points", "Index", "Point")<br />
+        @Html.ActionLink("List of cars", "Index", "Car")
+        <br /><br />
+
+        @Html.ActionLink("Add car", "Create", "Car")<br />
+        @Html.ActionLink("Add departure/destination point", "Create", "Point")
+    </div>
+</div>

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="JourneyDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="car">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="char" MaxLength="100" Nullable="false" />
+    <Property Name="type" Type="char" MaxLength="100" Nullable="false" />
+    <Property Name="consumption" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="journey">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="journey" Type="char" MaxLength="100" Nullable="false" />
+    <Property Name="departure" Type="int" Nullable="false" />
+    <Property Name="destination" Type="int" Nullable="false" />
+    <Property Name="car_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="point">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="point" Type="char" MaxLength="100" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_journey_car">
+    <End Role="car" Type="Self.car" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="car">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="car_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_journey_point1">
+    <End Role="point" Type="Self.point" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="point">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="departure" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_journey_point2">
+    <End Role="point" Type="Self.point" Multiplicity="1" />
+    <End Role="journey" Type="Self.journey" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="point">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="journey">
+        <PropertyRef Name="destination" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="JourneyDataModelStoreContainer">
+    <EntitySet Name="car" EntityType="Self.car" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="journey" EntityType="Self.journey" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="point" EntityType="Self.point" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_journey_car" Association="Self.FK_journey_car">
+      <End Role="car" EntitySet="car" />
+      <End Role="journey" EntitySet="journey" />
+    </AssociationSet>
+    <AssociationSet Name="FK_journey_point1" Association="Self.FK_journey_point1">
+      <End Role="point" EntitySet="point" />
+      <End Role="journey" EntitySet="journey" />
+    </AssociationSet>
+    <AssociationSet Name="FK_journey_point2" Association="Self.FK_journey_point2">
+      <End Role="point" EntitySet="point" />
+      <End Role="journey" EntitySet="journey" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
