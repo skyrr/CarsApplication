@@ -15,9 +15,20 @@ namespace CarsApplication.Controllers
         private CarsAppEntities db = new CarsAppEntities();
 
         // GET: Journey
-        public ActionResult Index()
+        public ActionResult Index(DateTime? dateFrom, DateTime? dateTo)
         {
-            var journeys = db.Journeys.Include(j => j.Car).Include(j => j.Point).Include(j => j.Point1);
+            //var journeys = db.Journeys.Include(j => j.Car).Include(j => j.Point).Include(j => j.Point1);
+            var journeys = from s in db.Journeys select s;
+
+            if (dateFrom != null)
+            {
+                journeys = journeys.Where(s => s.date >= dateFrom );
+            } else
+            {
+                journeys = db.Journeys.Include(j => j.Car).Include(j => j.Point).Include(j => j.Point1);
+            }
+
+            //return View(journeys.ToList());
             return View(journeys.ToList());
         }
 
@@ -93,6 +104,44 @@ namespace CarsApplication.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(journey).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            ViewBag.car_id = new SelectList(db.Cars, "car_id", "name", journey.car_id);
+            ViewBag.departure = new SelectList(db.Points, "point_id", "point1", journey.departure);
+            ViewBag.destination = new SelectList(db.Points, "point_id", "point1", journey.destination);
+            return View(journey);
+        }
+
+
+        // GET: Journey/Clone/5
+        public ActionResult Clone(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Journey journey = db.Journeys.Find(id);
+            if (journey == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.car_id = new SelectList(db.Cars, "car_id", "name", journey.car_id);
+            ViewBag.departure = new SelectList(db.Points, "point_id", "point1", journey.departure);
+            ViewBag.destination = new SelectList(db.Points, "point_id", "point1", journey.destination);
+            return View(journey);
+        }
+
+        // POST: Journey/Clone/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Clone([Bind(Include = "journey_id,journey1,departure,destination,car_id,date,distance")] Journey journey)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Journeys.Add(journey);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    int totalConsumption = 0;
 }
 
 <h2>Index</h2>
@@ -9,6 +10,15 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by date: @Html.TextBox("SearchString")
+        <input type="submit" value="Search"/>
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -57,6 +67,9 @@
         </td>
         <td>
             @(item.Car.consumption * item.distance)
+            @{ 
+                totalConsumption += (int)(item.Car.consumption * item.distance);
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Point.point1)
@@ -68,8 +81,30 @@
             @Html.ActionLink("Edit", "Edit", new { id=item.journey_id }) |
             @Html.ActionLink("Details", "Details", new { id=item.journey_id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.journey_id })
+            @Html.ActionLink("Clone", "Clone", new { id = item.journey_id })
         </td>
     </tr>
+    
 }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><h4>total consumption for all trips</h4></td>
+        <td>
+            @{
+                if (Model != null)
+                {
 
+                <h3>@(totalConsumption)</h3>
+            }
+                <td></td>
+                <td></td>
+                <td></td>
+
+
+            }
+        </td>
+    </tr>
 </table>
